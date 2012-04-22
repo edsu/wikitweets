@@ -1,0 +1,14 @@
+{
+  "name": "wikitweets",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "jsdom": "latest",
+    "express": "latest",
+    "socket.io": "latest",
+    "underscore": "latest",
+    "ntwitter": "latest",
+    "request": "latest",
+    "unshorten": "latest"
+  }
+}

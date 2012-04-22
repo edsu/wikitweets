@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>wikitweets</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/underscore-min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(main);
+
+    var urlPattern = new RegExp('(http://t.co/[^ ]+)', 'g');
+    var updateTemplate = _.template('<article class="tweet"><header><img class="avatar" src="<%= avatar %>"><span class="name"><%= name %></span><br><span class="user"><a href="http://twitter.com/<%= user %>"><%= user %></a></span></header><div class="text"><%= textWithLinks %></div><div class="wikipediaArticle"><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a> <%= article.summary %></div><footer><%= created %></footer></article>');
+     
+    function main() {
+      var socket = io.connect();
+      socket.on('connect', function() {
+        socket.on('tweet', function(tweet) {
+          addTweet(tweet);
+        });
+      });
+    }
+
+    function addTweet(tweet) {
+      tweet.textWithLinks = makeLinks(tweet.text);
+      var item = $(updateTemplate(tweet));
+      item.hide();
+      var tweets = $("#tweets");
+      tweets.prepend(item);
+      item.slideDown();
+    }
+
+    function makeLinks(text) {
+      return text.replace(urlPattern, '<a href="$1">$1</a>');
+    }
+
+    </script>
+
+    </head>
+    <body>
+        <section id="tweets"></section>
+    </body>
+</html>

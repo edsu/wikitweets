@@ -1,0 +1,62 @@
+body {
+    margin: 5%;
+    font-size: 16pt;
+}
+
+section#tweets {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+article.tweet {
+    padding: 20px;
+    border: thin solid #eeeeee;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+article header {
+    margin-bottom: 20px;
+}
+
+article footer {
+    margin-top: 10px;
+    font-size: 11pt;
+}
+
+img.avatar {
+    vertical-align: top;
+    float: left;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+span.user {
+    font-size: 17pt;
+}
+
+span.name {
+    font-size: 17pt;
+}
+
+article.tweet div.text {
+    clear: both;
+}
+
+div.wikipediaArticle {
+    margin-top: 10px;
+    border-top: thin solid #eeeeee;
+    border-bottom: thin solid #eeeeee;
+    padding: 5px;
+    color: #aaaaaa;
+}
+
+a.articleTitle {
+    font-size: larger;
+    font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+}
