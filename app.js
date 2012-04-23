@@ -105,10 +105,6 @@ function addArticleSummary(article, callback) {
       console.log('no results for ' + opts['url']);
       return;
     }
-    /*
-    article.summary = data.parse.text;
-    callback(article);
-    */
     var html = "<div>" + data.parse.text['*'] + "</div>";
     jsdom.env(html, ['http://code.jquery.com/jquery-1.5.min.js'], 
       function(err, window) {
@@ -122,6 +118,7 @@ function addArticleSummary(article, callback) {
         });
         article.summary = summary.html();
         callback(article);
+        window.close();
       }
     );
   });

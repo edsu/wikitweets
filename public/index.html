@@ -10,8 +10,7 @@
     <script type="text/javascript">
     $(document).ready(main);
 
-    var urlPattern = new RegExp('(http://t.co/[^ ]+)', 'g');
-    var updateTemplate = _.template('<article class="tweet"><header><img class="avatar" src="<%= avatar %>"><span class="name"><%= name %></span><br><span class="user"><a href="http://twitter.com/<%= user %>"><%= user %></a></span></header><div class="text"><%= textWithLinks %></div><div class="wikipediaArticle"><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a> <%= article.summary %></div><footer><%= created %></footer></article>');
+    var updateTemplate = _.template('<article class="tweet"><header><img class="avatar" src="<%= avatar %>"><span class="name"><%= name %></span><br><span class="user"><a href="http://twitter.com/<%= user %>"><%= user %></a></span></header><div class="text"><%= textWithLinks %></div><div class="created"><a href="http://twitter.com/<%= user %>/statuses/<%= id %>"><%= created %></a></div><div class="wikipediaArticle"><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a> <%= article.summary %></div>');
      
     function main() {
       var socket = io.connect();
@@ -31,6 +30,7 @@
       item.slideDown();
     }
 
+    var urlPattern = new RegExp('(http://t.co/[^ ]+)', 'g');
     function makeLinks(text) {
       return text.replace(urlPattern, '<a href="$1">$1</a>');
     }
@@ -39,6 +39,8 @@
 
     </head>
     <body>
+        <!-- github banner -->
+        <a href="http://github.com/edsu/wikitweets"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a> 
         <section id="tweets"></section>
     </body>
 </html>
