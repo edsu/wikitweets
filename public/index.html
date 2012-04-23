@@ -10,7 +10,7 @@
     <script type="text/javascript">
     $(document).ready(main);
 
-    var updateTemplate = _.template('<article class="tweet"><header><img class="avatar" src="<%= avatar %>"><span class="name"><%= name %></span><br><span class="user"><a href="http://twitter.com/<%= user %>"><%= user %></a></span></header><div class="text"><%= textWithLinks %></div><div class="created"><a href="http://twitter.com/<%= user %>/statuses/<%= id %>"><%= created %></a></div><div class="wikipediaArticle"><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a> <%= article.summary %></div>');
+    var updateTemplate = _.template('<article class="tweet"><header><a href="http://twitter.com/<%= user %>"><img class="avatar" src="<%= avatar %>"></a><span class="name"><%= name %></span><br><span class="user"><a href="http://twitter.com/<%= user %>"><%= user %></a></span></header><div class="text"><%= textWithLinks %></div><div class="created"><a href="<%= url %>"><%= created %></a></div><div class="wikipediaArticle"><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a> <%= article.summary %></div>');
      
     function main() {
       var socket = io.connect();

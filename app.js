@@ -50,8 +50,10 @@ function tweet(t, sockets) {
     unshorten(url, function(wikipediaUrl) {
       getArticle(wikipediaUrl, function(article) {
         if (article) {
+          var tweetUrl = "http://twitter.com/" + t.user.screen_name + "/statuses/" + t.id_str;
           var msg = {
             "id": t.id_str,
+            "url": tweetUrl,
             "text": t.text,
             "user": t.user.screen_name,
             "name": t.user.name,

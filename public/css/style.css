@@ -27,6 +27,7 @@ img.avatar {
     vertical-align: top;
     float: left;
     margin-right: 10px;
+    border: thin gray solid;
     border-radius: 5px;
     height: 65px;
 }
