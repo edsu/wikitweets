@@ -5,12 +5,6 @@ body {
     margin: 0;
     color: black;
     background: white;
-    /*
-    background-position: top left;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-image: url(http://www.w3.org/StyleSheets/TR/logo-WD);
-    */
 }
 
 body header#sidebar {
