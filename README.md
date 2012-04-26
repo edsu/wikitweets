@@ -25,12 +25,12 @@ Install
 -------
 
 * install node and git
-* git clone https://github.com/edsu/wikistream.git
-* cd wikistream
-* npm install
-* cp config.json.tmpl config.json
+* `git clone https://github.com/edsu/wikistream.git`
+* `cd wikistream`
+* `npm install`
+* `cp config.json.tmpl config.json`
 * get [twitter](https://dev.twitter.com/apps/new) credentials and add them to config.json
-* node app.js
+* `node app.js`
 * open http://localhost:3000/ in browser
 
 Licnse
