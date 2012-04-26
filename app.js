@@ -43,7 +43,7 @@ function main() {
     });
   });
 
-  app.listen(process.env.PORT || config.port);
+  app.listen(process.env.PORT || config.port || 3000);
 }
 
 function getConfig() {
@@ -57,6 +57,7 @@ function getConfig() {
       access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
       access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
     }
+    console.log(config);
     return config;
   }
 }
