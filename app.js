@@ -40,8 +40,18 @@ function main() {
 }
 
 function getConfig() {
-  var configPath = path.join(__dirname, "config.json");
-  return JSON.parse(fs.readFileSync(configPath));
+  try {
+    var configPath = path.join(__dirname, "config.json");
+    return JSON.parse(fs.readFileSync(configPath));
+  } catch(err) {
+    var config = {
+      consumer_key: process.env.TWITTER_CONSUMER_KEY,
+      consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+      access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+    }
+    return config;
+  }
 }
 
 function tweet(t, sockets) {
