@@ -21,6 +21,13 @@ function main() {
   });
 
   var io = socketio.listen(app);
+
+  // heroku specific configuration
+  io.configure('production', function () {
+    io.set("transports", ["xhr-polling"]); 
+    io.set("polling duration", 10); 
+  });
+
   io.sockets.on('connection', function(socket) {
     _.each(latest, function(t) {socket.emit('tweet', t);});
     sockets.push(socket);
