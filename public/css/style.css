@@ -1,21 +1,73 @@
 body {
-    font-size: 16pt;
+    font-family: sans-serif;
+    font-size: 12pt;
+    padding: 2em 1em 2em 70px;
+    margin: 0;
+    color: black;
+    background: white;
+    /*
+    background-position: top left;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-image: url(http://www.w3.org/StyleSheets/TR/logo-WD);
+    */
 }
 
-section#tweets {
-    width: 50%;
-    margin-left: 30%
+body header#sidebar {
+    position: absolute;
+    left: 50px;
+    top: 0px;
+    height: 100%;
+    width: 125px;
+    text-align: center;
+}
+
+body header#sidebar pre {
+    font-size: 25pt;
+    font-weight: bold;
+    font-family: 'Anonymous Pro', sans-serif;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+@media screen{
+    body > header#sidebar {
+        position:fixed;
+    }
+}
+
+section#updates {
+}
+
+article.update {
+    width: 70%;
+    margin-left: 150px;
+    margin-right: auto;
+    padding: 20px;
+    clear: both;
+    display: block;
+    border-bottom: thin solid #cccccc;
 }
 
 article.tweet {
-    padding: 20px;
-    border: thin solid #eeeeee;
-    margin-bottom: 15px;
-    border-radius: 10px;
+    width: 45%;
+    float: left;
+}
+
+article.wikipediaArticle {
+    margin-left: 47%;
+}
+
+div.clearUpdate {
+    font-size: 0px;
+    line-height: 0px;
+    clear: both;
 }
 
 article header {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    height: 45px;
+    font-weight: bold;
 }
 
 div.created {
@@ -24,39 +76,22 @@ div.created {
 }
 
 img.avatar {
-    vertical-align: top;
+    vertical-align: middle;
     float: left;
     margin-right: 10px;
-    border: thin gray solid;
     border-radius: 5px;
-    height: 65px;
-}
-
-span.user {
-    font-size: 17pt;
-}
-
-span.name {
-    font-size: 17pt;
-}
-
-article.tweet div.text {
-    clear: both;
-}
-
-div.wikipediaArticle {
-    margin-top: 10px;
-    border-top: thin solid #eeeeee;
-    padding: 5px;
-    color: #999999;
-    font-size: smaller;
+    height: 45px;
 }
 
 a.articleTitle {
-    font-size: larger;
-    font-weight: bold;
 }
 
 a {
   text-decoration: none;
+}
+
+img.wikipediaIcon {
+    height: 45px;
+    vertical-align: middle;
+    margin-right: 10px;
 }

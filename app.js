@@ -62,7 +62,6 @@ function tweet(t, sockets) {
             "article": article
           };
           addLatest(msg);
-          console.log(msg);
           _.each(sockets, function(socket) {
             socket.emit('tweet', msg);
           });
@@ -79,7 +78,11 @@ function getArticle(url, callback) {
     var origTitle = querystring.unescape(match[2]);
     var title = origTitle.replace(/_/g, ' ');
     var article = {language: lang, title: title, origTitle: origTitle, url: url};
-    addArticleSummary(article, callback);
+    if (article.origTitle.match(/\.(jpg|png|jpeg|gif)$/)) {
+      addImageThumbnail(article, callback);
+    } else {
+      addArticleSummary(article, callback);
+    }
   }
 }
 
@@ -95,6 +98,7 @@ function addArticleSummary(article, callback) {
     headers: {'User-Agent': 'wikitweets <http://github.com/edsu/wikitweets'},
     qs: {
       action: 'parse',
+      redirects: true,
       prop: 'text',
       page: article.origTitle,
       format: 'json'
@@ -120,9 +124,36 @@ function addArticleSummary(article, callback) {
         });
         article.summary = summary.html();
         callback(article);
-        window.close();
+        // important to close window or else jsdom leaks memory
+        window.close(); 
       }
     );
+  });
+}
+
+function addImageThumbnail(article, callback) {
+  var opts = {
+    url: 'http://' + article.language + '.wikipedia.org/w/api.php',
+    json: true,
+    headers: {'User-Agent': 'wikitweets <http://github.com/edsu/wikitweets'},
+    qs: {
+      action: 'query',
+      prop: 'imageinfo',
+      iiprop: 'url',
+      iiurlwidth: 250,
+      titles: article.origTitle,
+      format: 'json'
+    }
+  };
+  request.get(opts, function(e, r, data) {
+    try {
+      var pageId = _.keys(data.query.pages)[0];
+      var thumbUrl = data.query.pages[pageId].imageinfo[0].thumburl
+      article.summary = _.template('<a href="<%= url %>"><img src="<%= thumbUrl %>"></a>', {url: article.url, thumbUrl: thumbUrl});
+      callback(article);
+    } catch(err) {
+      console.log("failed to fetch thumbnail for " + article.origTitle);
+    }
   });
 }
 

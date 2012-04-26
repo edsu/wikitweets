@@ -6,11 +6,12 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/underscore-min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Anonymous+Pro' rel='stylesheet' type='text/css'> 
 
     <script type="text/javascript">
     $(document).ready(main);
 
-    var updateTemplate = _.template('<article class="tweet"><header><a href="http://twitter.com/<%= user %>"><img class="avatar" src="<%= avatar %>"></a><span class="name"><%= name %></span><br><span class="user"><a href="http://twitter.com/<%= user %>"><%= user %></a></span></header><div class="text"><%= textWithLinks %></div><div class="created"><a href="<%= url %>"><%= created %></a></div><div class="wikipediaArticle"><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a> <%= article.summary %></div>');
+    var updateTemplate = _.template('<article class="update"><article class="tweet"><header><a href="http://twitter.com/<%= user %>"><img class="avatar" src="<%= avatar %>"></a><span class="name"><%= name %></span><br><span class="user"><a href="http://twitter.com/<%= user %>"><%= user %></a></span></header><div class="text"><%= textWithLinks %></div><div class="created"><a href="<%= url %>"><%= created %></a></div></article><article class="wikipediaArticle"><header><a href="<%= article.url %>"><img class="wikipediaIcon" src="/images/wikipedia.png"></a><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a></header><div class="articleSummary"><%= article.summary %></div></article><div class="clearUpdate"></div></article>');
      
     function main() {
       var socket = io.connect();
@@ -28,6 +29,9 @@
       var tweets = $("#tweets");
       tweets.prepend(item);
       item.slideDown();
+      // remove old updates so the DOM doesn't bloat memory when 
+      // someone leaves their browser open :-)
+      $("article.update:gt(100)").detach();
     }
 
     var urlPattern = new RegExp('(http://t.co/[^ ]+)', 'g');
@@ -41,6 +45,20 @@
     <body>
         <!-- github banner -->
         <a href="http://github.com/edsu/wikitweets"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a> 
+        <header id="sidebar">
+            <pre>w
+i
+k
+i
+t
+w
+e
+e
+t
+s</pre>
+            <p>wikitweets is an experimental visualization of how wikipedia is cited on twitter</p>
+            <p>to see how it works please see the <a href="http://github.com/edsu/wikitweets">wikitweets</a> project page on github</p>
+        </header>
         <section id="tweets"></section>
     </body>
 </html>
