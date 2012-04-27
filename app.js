@@ -41,6 +41,12 @@ function main() {
     stream.on('data', function(t) {
       tweet(t, sockets);
     });
+    stream.on('error', function(e) {
+      console.log('uhoh got a twitter stream error: ' + e);
+    });
+    stream.on('limit', function(l) {
+      console.log('whoops we got limited by twitter: ' + l);
+    });
   });
 
   app.listen(process.env.PORT || config.port || 3000);
