@@ -53,6 +53,7 @@ function main() {
 }
 
 function getConfig() {
+  // looks in a json file or the environment for some config info
   try {
     var configPath = path.join(__dirname, "config.json");
     return JSON.parse(fs.readFileSync(configPath));
@@ -181,4 +182,6 @@ function addImageThumbnail(article, callback) {
   });
 }
 
-main();
+if (! module.parent) {
+  main();
+}
