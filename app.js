@@ -43,7 +43,7 @@ function main() {
       tweet(t, sockets);
     });
     stream.on('error', function(err, code) { 
-      console.log('uhoh got a twitter stream error: ' + err + ' ; ' + code;
+      console.log('uhoh got a twitter stream error: ' + err + ' ; ' + code);
     });
     stream.on('limit', function(l) {
       console.log('whoops we got limited by twitter: ' + l);
