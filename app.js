@@ -69,6 +69,7 @@ function getConfig() {
       consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
       access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
       access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+      ia_bucket: process.env.IA_BUCKET,
       ia_access_key: process.env.IA_ACCESS_KEY,
       ia_secret_key: process.env.IA_SECRET_KEY,
     }
