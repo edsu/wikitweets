@@ -14,7 +14,7 @@ var fs = require('fs'),
 
 var config = getConfig();
 var latest = [];
-var dumpSize = 1000;
+var dumpSize = 10;
 var archiving = false;
 
 function main() {
@@ -134,7 +134,7 @@ function archive() {
   }
 
   archiving = now;
-  var name = "/" + dateformat(now, 'yyyymmddhhmmss') + '.json';
+  var name = "/" + dateformat(now, 'yyyy/mm/dd/hhmmss') + '.json';
   var value = JSON.stringify(latest, null, 2);
   latest = [];
 
