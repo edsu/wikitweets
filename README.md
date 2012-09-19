@@ -2,7 +2,8 @@ wikitweets
 ==========
 
 wikitweets is a [Node](http://nodejs.org) web application that streams Tweets
-that reference Wikipedia to the browser. 
+that reference Wikipedia to the browser. The app actively archives Tweets it
+has received at the [Internet Archive](http://archive.org/details/wikitweets).
 
 How Does It Work?
 -----------------
@@ -29,7 +30,10 @@ Install
 * `cd wikistream`
 * `npm install`
 * `cp config.json.tmpl config.json`
-* get [twitter](https://dev.twitter.com/apps/new) credentials and add them to config.json
+* get [Twitter](https://dev.twitter.com/apps/new) credentials and add them to 
+  config.json
+* get [Internet Archive]('http://archive.org/help/abouts3.txt') credentials so
+  wikitweets can archive JSON there.
 * `node app.js`
 * open http://localhost:3000/ in browser
 

@@ -13,6 +13,8 @@
     "underscore": "latest",
     "ntwitter": "latest",
     "request": "latest",
-    "unshorten": "latest"
+    "unshorten": "latest",
+    "xml2js": "latest",
+    "dateformat": "latest"
   }
 }

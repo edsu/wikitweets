@@ -1,5 +1,7 @@
 var fs = require('fs'),
     path = require('path'),
+    http = require('http'),
+    ia = require('./lib/ia'),
     jsdom = require('jsdom'),
     _  = require('underscore'),
     express = require('express'),
@@ -7,20 +9,24 @@ var fs = require('fs'),
     twitter = require('ntwitter'),
     socketio = require('socket.io'),
     unshorten = require('unshorten'),
+    dateformat = require('dateformat'),
     querystring = require('querystring');
 
+var config = getConfig();
 var latest = [];
+var dumpSize = 10;
+var archiving = false;
 
 function main() {
-  var config = getConfig();
   var sockets = [];
 
-  var app = express.createServer();
+  var app = express();
+  var server = http.createServer(app);
+  var io = socketio.listen(server);
+
   app.configure(function() {
     app.use(express.static(__dirname + '/public'));
   });
-
-  var io = socketio.listen(app);
 
   // heroku specific configuration
   io.configure('production', function () {
@@ -50,7 +56,7 @@ function main() {
     });
   });
 
-  app.listen(process.env.PORT || config.port || 3000);
+  server.listen(process.env.PORT || config.port || 3000);
 }
 
 function getConfig() {
@@ -62,7 +68,9 @@ function getConfig() {
       consumer_key: process.env.TWITTER_CONSUMER_KEY,
       consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
       access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+      access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+      ia_access_key: process.env.IA_ACCESS_KEY,
+      ia_secret_key: process.env.IA_SECRET_KEY,
     }
     console.log(config);
     return config;
@@ -84,7 +92,8 @@ function tweet(t, sockets) {
             "name": t.user.name,
             "avatar": t.user.profile_image_url,
             "created": t.created_at,
-            "article": article
+            "article": article,
+            "tweet": t,
           };
           addLatest(msg);
           _.each(sockets, function(socket) {
@@ -113,7 +122,29 @@ function getArticle(url, callback) {
 
 function addLatest(msg) {
   latest.push(msg);
-  latest = latest.slice(-10, latest.size);
+  if (latest.length > dumpSize) archive();
+}
+
+function archive() {
+  var now = new Date();
+  if (archiving && now - archiving < 60 * 1000) {
+    console.log("looks like an archive is underway");
+    return;
+  }
+
+  archiving = now;
+  var name = "/" + dateformat(now, 'yyyymmddhhmmss') + '.json';
+  var value = JSON.stringify(latest, null, 2);
+  latest = [];
+
+  var c  = ia.createClient({
+    accessKey: config.ia_access_key, 
+    secretKey: config.ia_secret_key,
+    bucket: config.ia_bucket
+  });
+  c.addObject({name: name, value: value}, function() {
+    console.log("archived " + name);
+  });
 }
 
 function addArticleSummary(article, callback) {
