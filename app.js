@@ -14,7 +14,7 @@ var fs = require('fs'),
 
 var config = getConfig();
 var latest = [];
-var dumpSize = 10;
+var dumpSize = 1000;
 var archiving = false;
 
 function main() {
