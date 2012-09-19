@@ -8,6 +8,7 @@ body {
 }
 
 body header#sidebar {
+    font-size: 11pt;
     position: absolute;
     left: 50px;
     top: 0px;
