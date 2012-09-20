@@ -36,7 +36,7 @@ function main() {
 
   io.sockets.on('connection', function(socket) {
     // don't send all of the latest tweets it can cause a lag
-    _.each(latest.slice(0, 10), function(t) {socket.emit('tweet', t);});
+    _.each(latest.slice(-10), function(t) {socket.emit('tweet', t);});
     sockets.push(socket);
     socket.on('disconnect', function() {
       sockets = _.without(sockets, socket);
