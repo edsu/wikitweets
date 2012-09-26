@@ -32,7 +32,7 @@ Install
 * `cp config.json.tmpl config.json`
 * get [Twitter](https://dev.twitter.com/apps/new) credentials and add them to 
   config.json
-* get [Internet Archive]('http://archive.org/help/abouts3.txt') credentials so
+* get [Internet Archive](http://archive.org/help/abouts3.txt) credentials so
   wikitweets can archive JSON there.
 * `node app.js`
 * open http://localhost:3000/ in browser
