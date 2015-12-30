@@ -26,10 +26,6 @@ function main() {
 
   app.use(express.static(__dirname + '/public'));
 
-  // heroku specific configuration
-  //io.set("transports", ["polling"]); 
-  //io.set("polling duration", 10); 
-
   io.sockets.on('connection', function(socket) {
     // don't send all of the latest tweets it can cause a lag
     _.each(latest.slice(-10), function(t) {socket.emit('tweet', t);});
