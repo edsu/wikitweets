@@ -28,7 +28,7 @@ function main() {
 
   io.sockets.on('connection', function(socket) {
     // don't send all of the latest tweets it can cause a lag
-    _.each(latest.slice(-10), function(t) {socket.emit('tweet', t);});
+    _.each(latest, function(t) {socket.emit('tweet', t);});
     sockets.push(socket);
     socket.on('disconnect', function() {
       sockets = _.without(sockets, socket);
@@ -118,29 +118,9 @@ function getArticle(url, callback) {
 
 function addLatest(msg) {
   latest.push(msg);
-  if (latest.length > dumpSize) archive();
-}
-
-function archive() {
-  var now = new Date();
-  if (archiving && now - archiving < 61 * 1000) {
-    console.log("looks like an archive is underway");
-    return;
+  if (latest.length > 25) {
+    latest = latest.slice(-25);
   }
-
-  archiving = now;
-  var name = "/" + dateformat(now, 'yyyymmddhhmmss') + '.json';
-  var value = JSON.stringify(latest, null, 2);
-  latest = [];
-
-  var c  = ia.createClient({
-    accessKey: config.ia_access_key, 
-    secretKey: config.ia_secret_key,
-    bucket: config.ia_bucket
-  });
-  c.addObject({name: name, value: value}, function() {
-    console.log("archived " + name);
-  });
 }
 
 function addArticleSummary(article, callback) {
