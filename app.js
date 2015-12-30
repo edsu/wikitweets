@@ -40,7 +40,7 @@ function main() {
   var tweets = new twitter(getConfig());
   tweets.stream('statuses/filter', {track: 'wikipedia'}, function(stream) {
     stream.on('data', function(t) {
-      tweet(t, sockets);
+      tweet(t, io);
     });
     stream.on('error', function(err, code) { 
       console.log('uhoh got a twitter stream error: ' + err + ' ; ' + code);
@@ -73,7 +73,7 @@ function getConfig() {
   }
 }
 
-function tweet(t, sockets) {
+function tweet(t, io) {
   if (! t.entities || ! t.entities.urls) return;
   console.log("got tweet: " + t.id_str);
   _.each(t.entities.urls, function(urlObj) {
