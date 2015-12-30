@@ -103,7 +103,7 @@ function tweet(t, sockets) {
 }
 
 function getArticle(url, callback) {
-  var match = url.match(/https?:\/\/(..).(m.)?wikipedia.org\/wiki\/(.+)/);
+  var match = url.match(/https?:\/\/(..)\.(m\.)?wikipedia.org\/wiki\/(.+)/);
   var diffMatch = url.match(/(..)\.wikipedia\.org\/w\/index.php?diff=(\d+)&oldid=(\d+)/);
   if (match) {
     var lang = match[1];
