@@ -24,11 +24,10 @@
     }
 
     function addTweet(tweet) {
-      tweet.textWithLinks = makeLinks(tweet.text);
       var tweetEl = $('<article class="tweet"></article>');
       twttr.widgets.createTweet(tweet.id, tweetEl)
         .then(function(el) {
-          var item = $('<article class="update">' + tweetEl.prop('outerHTML') + wikipediaTemplate(tweet) + "<div class="clearUpdate"></div></article>");
+          var item = $('<article class="update">' + tweetEl.prop('outerHTML') + wikipediaTemplate(tweet) + "<div class='clearUpdate'></div></article>");
           item.hide();
           var tweets = $("#tweets");
           tweets.prepend(item);
