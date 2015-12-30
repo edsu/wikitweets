@@ -103,10 +103,11 @@ function tweet(t, sockets) {
 }
 
 function getArticle(url, callback) {
-  match = url.match(/https?:\/\/(..).wikipedia.org\/wiki\/(.+)/);
+  var match = url.match(/https?:\/\/(..).(m.)?wikipedia.org\/wiki\/(.+)/);
+  var diffMatch = url.match(/(..)\.wikipedia\.org\/w\/index.php?diff=(\d+)&oldid=(\d+)/);
   if (match) {
     var lang = match[1];
-    var origTitle = querystring.unescape(match[2]);
+    var origTitle = querystring.unescape(match[3]);
     var title = origTitle.replace(/_/g, ' ');
     var article = {language: lang, title: title, origTitle: origTitle, url: url};
     if (article.origTitle.match(/\.(jpg|png|jpeg|gif)$/)) {
@@ -114,6 +115,11 @@ function getArticle(url, callback) {
     } else {
       addArticleSummary(article, callback);
     }
+  } else if (diffMatch) {
+    var lang = match[1];
+    var id = match[2];
+    var diff = {language: lang, url: url, id: id};
+    addDiff(diff, callback);
   }
 }
 
@@ -122,6 +128,11 @@ function addLatest(msg) {
   if (latest.length > 25) {
     latest = latest.slice(-25);
   }
+}
+
+function addDiff(diff, callback) {
+  diff.title = "edit: " + diff.id;
+  callback(diff);
 }
 
 function addArticleSummary(article, callback) {
