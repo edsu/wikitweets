@@ -94,7 +94,7 @@ function tweet(t, io) {
             io.sockets.emit('tweet', msg);
           }
         });
-      });
+      }).on('error', function(e) {console.log("unshorten error: " + url)});
     });
   } catch (e) {
     console.log("caught: " + e);
