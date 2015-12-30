@@ -1,7 +1,6 @@
 {
   "engines": {
-    "node": "0.8.x",
-    "npm": "1.1.x"
+    "node": "4.2.x"
   },
   "name": "wikitweets",
   "version": "0.0.1",

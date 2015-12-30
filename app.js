@@ -24,15 +24,11 @@ function main() {
   var server = http.createServer(app);
   var io = socketio.listen(server);
 
-  app.configure(function() {
-    app.use(express.static(__dirname + '/public'));
-  });
+  app.use(express.static(__dirname + '/public'));
 
   // heroku specific configuration
-  io.configure('production', function () {
-    io.set("transports", ["xhr-polling"]); 
-    io.set("polling duration", 10); 
-  });
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
 
   io.sockets.on('connection', function(socket) {
     // don't send all of the latest tweets it can cause a lag
