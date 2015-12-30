@@ -3,6 +3,7 @@
     <head>
     <title>wikitweets</title>
     <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/underscore-min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
@@ -11,7 +12,7 @@
     <script type="text/javascript">
     $(document).ready(main);
 
-    var updateTemplate = _.template('<article class="update"><article class="tweet"><header><a href="http://twitter.com/<%= user %>"><img class="avatar" src="<%= avatar %>"></a><span class="name"><%= name %></span><br><span class="user"><a href="http://twitter.com/<%= user %>"><%= user %></a></span></header><div class="text"><%= textWithLinks %></div><div class="created"><a href="<%= url %>"><%= created %></a></div></article><article class="wikipediaArticle"><header><a href="<%= article.url %>"><img class="wikipediaIcon" src="/images/wikipedia.png"></a><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a></header><div class="articleSummary"><%= article.summary %></div></article><div class="clearUpdate"></div></article>');
+    var wikipediaTemplate = _.template('<article class="update"><article class="tweet"></article><article class="wikipediaArticle"><header><a href="<%= article.url %>"><img class="wikipediaIcon" src="/images/wikipedia.png"></a><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a></header><div class="articleSummary"><%= article.summary %></div></article>');
      
     function main() {
       var socket = io.connect();
@@ -24,21 +25,18 @@
 
     function addTweet(tweet) {
       tweet.textWithLinks = makeLinks(tweet.text);
-      var item = $(updateTemplate(tweet));
-      item.hide();
-      var tweets = $("#tweets");
-      tweets.prepend(item);
-      item.slideDown();
-      // remove old updates so the DOM doesn't bloat memory when 
-      // someone leaves their browser open :-)
-      $("article.update:gt(100)").detach();
+      var tweetEl = $('<article class="tweet"></article>');
+      twttr.widgets.createTweet(tweet.id, tweetEl)
+        .then(function(el) {
+          var item = $('<article class="update">' + tweetEl.prop('outerHTML') + wikipediaTemplate(tweet) + "<div class="clearUpdate"></div></article>");
+          item.hide();
+          var tweets = $("#tweets");
+          tweets.prepend(item);
+          item.slideDown();
+          // remove old updates so the DOM doesn't bloat memory
+          $("article.update:gt(100)").detach();
+        });
     }
-
-    var urlPattern = new RegExp('(http://t.co/[^ ]+)', 'g');
-    function makeLinks(text) {
-      return text.replace(urlPattern, '<a href="$1">$1</a>');
-    }
-
     </script>
 
     </head>
