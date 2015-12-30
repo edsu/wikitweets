@@ -28,6 +28,10 @@ function main() {
     _.each(latest, function(t) {socket.emit('tweet', t);});
   });
 
+  io.sockets.on('error', function(e) {
+    console.log("socket error: " + e);
+  });
+
   var tweets = new twitter(getConfig());
   tweets.stream('statuses/filter', {track: 'wikipedia'}, function(stream) {
     stream.on('data', function(t) {
