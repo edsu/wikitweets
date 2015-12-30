@@ -17,9 +17,10 @@
     function main() {
       var socket = io.connect();
       socket.on('connect', function() {
-        socket.on('tweet', function(tweet) {
-          addTweet(tweet);
-        });
+        console.log('connected');
+      });
+      socket.on('tweet', function(tweet) {
+        addTweet(tweet);
       });
     }
 
