@@ -42,7 +42,7 @@ function main() {
   var tweets = new twitter(getConfig());
   tweets.stream('statuses/filter', {track: 'wikipedia'}, function(stream) {
     stream.on('data', function(t) {
-      consoe.log("got tweet: " + t.id_str);
+      console.log("got tweet: " + t.id_str);
       tweet(t, sockets);
     });
     stream.on('error', function(err, code) { 
