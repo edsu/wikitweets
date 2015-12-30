@@ -29,10 +29,12 @@ function main() {
   io.sockets.on('connection', function(socket) {
     // don't send all of the latest tweets it can cause a lag
     _.each(latest, function(t) {socket.emit('tweet', t);});
+    /*
     sockets.push(socket);
     socket.on('disconnect', function() {
       sockets = _.without(sockets, socket);
     });
+    */
   });
 
   var tweets = new twitter(getConfig());
@@ -93,9 +95,12 @@ function tweet(t, sockets) {
             "tweet": t,
           };
           addLatest(msg);
+          io.sockets.emit('tweet', msg);
+          /*
           _.each(sockets, function(socket) {
             socket.emit('tweet', msg);
           });
+          */
         }
       });
     });
