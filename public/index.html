@@ -12,7 +12,7 @@
     <script type="text/javascript">
     $(document).ready(main);
 
-    var wikipediaTemplate = _.template('<article class="update"><article class="tweet"></article><article class="wikipediaArticle"><header><a href="<%= article.url %>"><img class="wikipediaIcon" src="/images/wikipedia.png"></a><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a></header><div class="articleSummary"><%= article.summary %></div></article>');
+    var updateTemplate = _.template('<article class="update"><article id="tweet-<%= id %>" class="tweet"></article><article class="wikipediaArticle"><header><a href="<%= article.url %>"><img class="wikipediaIcon" src="/images/wikipedia.png"></a><a class="articleTitle" href="<%= article.url %>"><%= article.title %></a></header><div class="articleSummary"><%= article.summary %></div></article><div class="clearUpdate"></div></article>');
      
     function main() {
       var socket = io.connect();
@@ -24,18 +24,22 @@
     }
 
     function addTweet(tweet) {
-      var tweetEl = $('<article class="tweet"></article>');
-      twttr.widgets.createTweet(tweet.id, tweetEl)
-        .then(function(el) {
-          var item = $('<article class="update">' + tweetEl.prop('outerHTML') + wikipediaTemplate(tweet) + "<div class='clearUpdate'></div></article>");
-          item.hide();
-          var tweets = $("#tweets");
-          tweets.prepend(item);
-          item.slideDown();
-          // remove old updates so the DOM doesn't bloat memory
-          $("article.update:gt(100)").detach();
-        });
+      tweet.textWithLinks = makeLinks(tweet.text);
+      var item = $(updateTemplate(tweet));
+      item.hide();
+      var tweets = $("#tweets");
+      tweets.prepend(item);
+      twttr.widgets.createTweet(tweet.id, document.getElementById('tweet-' + tweet.id)).then(function(el) {item.slideDown()});
+      // remove old updates so the DOM doesn't bloat memory when 
+      // someone leaves their browser open :-)
+      $("article.update:gt(100)").detach();
     }
+
+    var urlPattern = new RegExp('(http://t.co/[^ ]+)', 'g');
+    function makeLinks(text) {
+      return text.replace(urlPattern, '<a href="$1">$1</a>');
+    }
+
     </script>
 
     </head>
