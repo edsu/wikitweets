@@ -42,7 +42,7 @@ function main() {
   var tweets = new twitter(getConfig());
   tweets.stream('statuses/filter', {track: 'wikipedia'}, function(stream) {
     stream.on('data', function(t) {
-      console.log(t);
+      consoe.log("got tweet: " + t.id_str);
       tweet(t, sockets);
     });
     stream.on('error', function(err, code) { 
@@ -77,11 +77,13 @@ function getConfig() {
 }
 
 function tweet(t, sockets) {
-  var p = new RegExp('http://t.co/[^ ]+', 'g');
+  console.log("got tweet %s" + t.id_str);
+  var p = new RegExp('https?://t.co/[^ ]+', 'g');
   _.each(t.text.match(p), function(url) {
     unshorten(url, function(wikipediaUrl) {
       getArticle(wikipediaUrl, function(article) {
         if (article) {
+          console.log("found article " + article.title);
           var tweetUrl = "http://twitter.com/" + t.user.screen_name + "/statuses/" + t.id_str;
           var msg = {
             "id": t.id_str,
@@ -148,7 +150,7 @@ function archive() {
 
 function addArticleSummary(article, callback) {
   var opts = {
-    url: 'http://' + article.language + '.wikipedia.org/w/api.php',
+    url: 'https://' + article.language + '.wikipedia.org/w/api.php',
     json: true,
     headers: {'User-Agent': 'wikitweets <http://github.com/edsu/wikitweets'},
     qs: {
