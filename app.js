@@ -72,7 +72,7 @@ function getConfig() {
 }
 
 function tweet(t, sockets) {
-  if (! t.entities or ! t.entities.urls) return;
+  if (! t.entities || ! t.entities.urls) return;
   console.log("got tweet: " + t.id_str);
   _.each(t.entities.urls, function(urlObj) {
     url = urlObj.expanded_url;
