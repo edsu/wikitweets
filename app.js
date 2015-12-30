@@ -42,7 +42,6 @@ function main() {
   var tweets = new twitter(getConfig());
   tweets.stream('statuses/filter', {track: 'wikipedia'}, function(stream) {
     stream.on('data', function(t) {
-      console.log("got tweet: " + t.id_str);
       tweet(t, sockets);
     });
     stream.on('error', function(err, code) { 
@@ -77,13 +76,13 @@ function getConfig() {
 }
 
 function tweet(t, sockets) {
-  console.log("got tweet %s" + t.id_str);
+  console.log("got tweet: " + t.id_str);
   var p = new RegExp('https?://t.co/[^ ]+', 'g');
   _.each(t.text.match(p), function(url) {
     unshorten(url, function(wikipediaUrl) {
       getArticle(wikipediaUrl, function(article) {
         if (article) {
-          console.log("found article " + article.title);
+          console.log("got article: " + article.title);
           var tweetUrl = "http://twitter.com/" + t.user.screen_name + "/statuses/" + t.id_str;
           var msg = {
             "id": t.id_str,
