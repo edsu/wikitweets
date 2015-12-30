@@ -72,9 +72,10 @@ function getConfig() {
 }
 
 function tweet(t, sockets) {
+  if (! t.entities or ! t.entities.urls) return;
   console.log("got tweet: " + t.id_str);
-  var p = new RegExp('https?://t.co/[^ ]+', 'g');
-  _.each(t.text.match(p), function(url) {
+  _.each(t.entities.urls, function(urlObj) {
+    url = urlObj.expanded_url;
     unshorten(url, function(wikipediaUrl) {
       getArticle(wikipediaUrl, function(article) {
         if (article) {
