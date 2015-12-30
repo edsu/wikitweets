@@ -24,12 +24,11 @@
     }
 
     function addTweet(tweet) {
-      tweet.textWithLinks = makeLinks(tweet.text);
       var item = $(updateTemplate(tweet));
-      item.hide();
+      //item.hide();
       var tweets = $("#tweets");
       tweets.prepend(item);
-      twttr.widgets.createTweet(tweet.id, document.getElementById('tweet-' + tweet.id)).then(function(el) {item.slideDown("slow")});
+      twttr.widgets.createTweet(tweet.id, document.getElementById('tweet-' + tweet.id)).then(function(el) {$(el).slideDown('slow'); console.log('slide');});
       // remove old updates so the DOM doesn't bloat memory when 
       // someone leaves their browser open :-)
       $("article.update:gt(100)").detach();
