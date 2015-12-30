@@ -167,6 +167,8 @@ function addArticleSummary(article, callback) {
         window.close(); 
       }
     );
+  }).on('error', function(e) {
+    console.log("error: " + e);
   });
 }
 
@@ -193,6 +195,8 @@ function addImageThumbnail(article, callback) {
     } catch(err) {
       console.log("failed to fetch thumbnail for " + article.origTitle);
     }
+  }).on('error', function(e) {
+    console.log(e);
   });
 }
 
