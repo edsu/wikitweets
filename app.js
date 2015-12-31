@@ -74,6 +74,8 @@ function tweet(t, io) {
     console.log("got tweet: " + t.id_str);
     _.each(t.entities.urls, function(urlObj) {
       url = urlObj.expanded_url;
+      // a hack until unshorten can handle non-existent host names
+      if (url.match(/blaast.com/)) return;
       unshorten(url, function(wikipediaUrl) {
         getArticle(wikipediaUrl, function(article) {
           if (article) {
