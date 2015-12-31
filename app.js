@@ -8,7 +8,6 @@ var fs = require('fs'),
     request = require('request'),
     twitter = require('ntwitter'),
     socketio = require('socket.io'),
-    unshorten = require('unshorten'),
     dateformat = require('dateformat'),
     querystring = require('querystring');
 
@@ -74,29 +73,25 @@ function tweet(t, io) {
     console.log("got tweet: " + t.id_str);
     _.each(t.entities.urls, function(urlObj) {
       url = urlObj.expanded_url;
-      // a hack until unshorten can handle non-existent host names
-      if (url.match(/blaast.com/)) return;
-      unshorten(url, function(wikipediaUrl) {
-        getArticle(wikipediaUrl, function(article) {
-          if (article) {
-            console.log("got article: " + article.title);
-            var tweetUrl = "http://twitter.com/" + t.user.screen_name + "/statuses/" + t.id_str;
-            var msg = {
-              "id": t.id_str,
-              "url": tweetUrl,
-              "text": t.text,
-              "user": t.user.screen_name,
-              "name": t.user.name,
-              "avatar": t.user.profile_image_url,
-              "created": t.created_at,
-              "article": article,
-              "tweet": t,
-            };
-            addLatest(msg);
-            io.sockets.emit('tweet', msg);
-          }
-        });
-      }).on('error', function(e) {console.log("unshorten error: " + url)});
+      getArticle(url, function(article) {
+        if (article) {
+          console.log("got article: " + article.title);
+          var tweetUrl = "http://twitter.com/" + t.user.screen_name + "/statuses/" + t.id_str;
+          var msg = {
+            "id": t.id_str,
+            "url": tweetUrl,
+            "text": t.text,
+            "user": t.user.screen_name,
+            "name": t.user.name,
+            "avatar": t.user.profile_image_url,
+            "created": t.created_at,
+            "article": article,
+            "tweet": t,
+          };
+          addLatest(msg);
+          io.sockets.emit('tweet', msg);
+        }
+      });
     });
   } catch (e) {
     console.log("caught: " + e);
